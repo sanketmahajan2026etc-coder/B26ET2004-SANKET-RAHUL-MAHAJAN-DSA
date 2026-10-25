@@ -1,0 +1,176 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float marks;
+};
+
+struct Student students[MAX];
+int n = 0;
+
+/* Create records */
+void create() {
+    int i;
+
+    printf("\nEnter number of students: ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("\nEnter details of student %d\n", i + 1);
+
+        printf("Roll No: ");
+        scanf("%d", &students[i].rollNo);
+
+        printf("Name: ");
+        scanf(" %[^\n]", students[i].name);
+
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
+    }
+
+    printf("\nRecords created successfully!\n");
+}
+
+/* Display records */
+void display() {
+    int i;
+
+    if (n == 0) {
+        printf("\nDatabase is empty!\n");
+        return;
+    }
+
+    printf("\n----- Student Database -----\n");
+    printf("Roll No\tName\t\tMarks\n");
+    printf("--------------------------------\n");
+
+    for (i = 0; i < n; i++) {
+        printf("%d\t%-15s %.2f\n",
+               students[i].rollNo,
+               students[i].name,
+               students[i].marks);
+    }
+}
+
+/* Modify a record */
+void modify() {
+    int roll, i, found = 0;
+
+    printf("\nEnter Roll No to modify: ");
+    scanf("%d", &roll);
+
+    for (i = 0; i < n; i++) {
+        if (students[i].rollNo == roll) {
+            printf("Enter new name: ");
+            scanf(" %[^\n]", students[i].name);
+
+            printf("Enter new marks: ");
+            scanf("%f", &students[i].marks);
+
+            printf("\nRecord modified successfully!\n");
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("\nRecord not found!\n");
+}
+
+/* Search a record */
+void search() {
+    int roll, i, found = 0;
+
+    printf("\nEnter Roll No to search: ");
+    scanf("%d", &roll);
+
+    for (i = 0; i < n; i++) {
+        if (students[i].rollNo == roll) {
+            printf("\nRecord Found!\n");
+            printf("Roll No : %d\n", students[i].rollNo);
+            printf("Name    : %s\n", students[i].name);
+            printf("Marks   : %.2f\n", students[i].marks);
+
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("\nRecord not found!\n");
+}
+
+/* Sort records by Roll No */
+void sort() {
+    int i, j;
+    struct Student temp;
+
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (students[j].rollNo > students[j + 1].rollNo) {
+                temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("\nRecords sorted by Roll No successfully!\n");
+}
+
+/* Main function */
+int main() {
+    int choice;
+
+    do {
+        printf("\n========== STUDENT DATABASE ==========\n");
+        printf("1. Create\n");
+        printf("2. Display\n");
+        printf("3. Modify\n");
+        printf("4. Search\n");
+        printf("5. Sort\n");
+        printf("6. Exit\n");
+        printf("======================================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                create();
+                break;
+
+            case 2:
+                display();
+                break;
+
+            case 3:
+                modify();
+                break;
+
+            case 4:
+                search();
+                break;
+
+            case 5:
+                sort();
+                break;
+
+            case 6:
+                printf("\nExiting program...\n");
+                break;
+
+            default:
+                printf("\nInvalid choice! Try again.\n");
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
+
+

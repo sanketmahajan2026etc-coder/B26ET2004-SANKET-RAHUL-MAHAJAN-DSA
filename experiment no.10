@@ -1,0 +1,57 @@
+
+#include <stdio.h>
+#define MAX 100
+
+char queue[MAX];
+int front = -1, rear = -1;
+
+void transmit(char data)
+{
+    if (rear == MAX - 1)
+    {
+        printf("Buffer Full!\n");
+        return;
+    }
+
+    if (front == -1)
+        front = 0;
+
+    queue[++rear] = data;
+}
+
+void receive()
+{
+    if (front == -1 || front > rear)
+    {
+        printf("No data to receive!\n");
+        return;
+    }
+
+    printf("%c", queue[front++]);
+
+    if (front > rear)
+        front = rear = -1;
+}
+
+int main()
+{
+    char data[MAX];
+    int i;
+
+    printf("Enter data to transmit: ");
+    scanf("%99s", data);
+
+    printf("\nTransmitting data...\n");
+
+    for (i = 0; data[i] != '\0'; i++)
+        transmit(data[i]);
+
+    printf("Receiving data: ");
+
+    while (front != -1)
+        receive();
+
+    printf("\nCommunication completed.\n");
+
+    return 0;
+}
